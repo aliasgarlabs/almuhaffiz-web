@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Al Muhaffiz</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.5.3/plyr.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    .loading {
+      background: transparent url('http://thinkfuture.com/wp-content/uploads/2013/10/loading_spinner.gif') center no-repeat;
+    }
+    .center-fit {
+      max-width: 100%;
+      max-height: 100vh;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid " >
+  <div class="row align-items-center">
+    <div class="col-sm ">
+      <img class= "loading center-fit" id="viewer">
+    </div>
+    <div class="col-sm" >
+      <div class="center-fit">
+        <div class="input-group mb-3">
+          <input id="pageNumber" type="text" class="form-control" placeholder="Page Number" aria-label="Page Number" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" onclick="nextPage();">Next</button>
+            <button class="btn btn-outline-secondary" type="button" onclick="prevPage();">Previous</button>
+            <button class="btn btn-outline-secondary" type="button" onclick="fetchPage();">Play</button>
+          </div>
+        </div>
+        <audio id="player" controls>
+        </audio>
+      </div>
+      </div>
+  </div>
+</div>
+
+
+<script src="https://cdn.plyr.io/3.5.3/plyr.polyfilled.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+  const player = new Plyr('#player');
+
+  function initialize() {
+    document.getElementById('pageNumber').value = 1;
+    fetchPage();
+
+    player.on('canplaythrough', event => {
+      player.play();
+    });
+
+    player.on('ended', event => {
+      nextPage();
+    });
+  }
+
+  initialize();
+
+  function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+  }
+
+
+  function fetchPage() {
+    var pageNumber = document.getElementById('pageNumber').value;
+
+    var viewer = document.getElementById('viewer');
+    viewer.src = '';
+    viewer.src = 'https://am-space-2.sgp1.cdn.digitaloceanspaces.com/hifzfiles/pages/1/'+pageNumber+'.jpg';
+    player.source = {
+      type: 'audio',
+      title: 'Example title',
+      sources: [
+        {
+          src: 'https://am-space-2.sgp1.cdn.digitaloceanspaces.com/hifzfiles/audio/3/Page'+ pad(pageNumber,3)+'.mp3',
+          type: 'audio/mp3',
+        }
+      ],
+    };
+
+  }
+
+  function prevPage() {
+    var pageNumber = document.getElementById('pageNumber').value;
+    document.getElementById('pageNumber').value = --pageNumber;
+    fetchPage();
+  }
+
+  function nextPage() {
+    var pageNumber = document.getElementById('pageNumber').value;
+    document.getElementById('pageNumber').value = ++pageNumber;
+    fetchPage();
+  }
+
+  function play() {
+    player.play();
+  }
+
+</script>
+
+</body>
+</html>
