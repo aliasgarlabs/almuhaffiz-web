@@ -38,7 +38,9 @@
         <audio id="player" controls>
         </audio>
       </div>
-      </div>
+      <button style="float: right" type="button" class="btn btn-light" onclick="feedback();">Feedback/ Help</button>
+    </div>
+
   </div>
 </div>
 
@@ -103,8 +105,8 @@
     fetchPage();
   }
 
-  function play() {
-    player.play();
+  function feedback() {
+    window.confirm("Please share your thoughts with almuhaffizteam@gmail.com");
   }
 
 </script>
